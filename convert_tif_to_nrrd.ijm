@@ -30,13 +30,6 @@ for(i=0;i<flist.length;i++){
 	nameOnly = File.nameWithoutExtension;
 	print("Image name without extension= " + nameOnly);
 
-
-	// save as nrrd
-	//run("Nrrd ... ", "nrrd="dir + nameOnly + '/');
-
-	print(dir + nameOnly + '/');
-	//run("Nrrd ... ", "nrrd="+dir + nameOnly + '/');
-
 	run("Nrrd ... ", "nrrd="+dir + nameOnly + ".nrrd");
 
 	print("End of file" + path);
