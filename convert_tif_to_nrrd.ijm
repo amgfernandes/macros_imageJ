@@ -6,23 +6,32 @@
 // Usage:
 // Run this macro and select a folder containing .tif files
 
-//Asks to select a directory. There should not be any " " in your directory or file names
-dir=getDirectory("choose file directory");
-print(dir)
-
-flist=getFileList(dir);
+#@ File (label="Select a folder to process", style="directory") inputFolder 
+#@ String (label = "File suffix", value = ".tif") suffix
+#@ File (label="Select a folder to save results", style="directory") outputFolder 
 
 
-setBatchMode(true); //batch mode on 
+print("User selected input folder: " + inputFolder);
+print("User selected save folder: " + outputFolder);
 
 
-for(i=0;i<flist.length;i++){
 
-	// check if files are .tif
+
+setBatchMode(true); //batch mode on
+
+//get file list from input folder
+fileList=getFileList(inputFolder);
+
+for (i = 0; i < lengthOf(fileList); i++) {
 	
-	if(endsWith(flist[i],"tif")){
-		path=dir+flist[i];
-		print(flist[i],"is a tif file.");
+	fileName=fileList[i];
+	
+	//check if file is correct one
+    if (endsWith(fileName, suffix)) {
+    	path=inputFolder + "/"+ fileList[i];
+    	print(fileName,"is a" + suffix + " file");
+         
+         
 		
 	// open files
 	run("Bio-Formats (Windowless)", "open=[path]");
@@ -30,15 +39,18 @@ for(i=0;i<flist.length;i++){
 	nameOnly = File.nameWithoutExtension;
 	print("Image name without extension= " + nameOnly);
 
-	run("Nrrd ... ", "nrrd="+dir + nameOnly + ".nrrd");
+	run("Nrrd ... ", "nrrd=[" +outputFolder+"/"+nameOnly + ".nrrd]");
 
-	print("End of file" + path);
+
+
+	
+	print(outputFolder+"/"+nameOnly + ".nrrd");
 
 
     }
    
     else {
-    	print(flist[i],"is NOT a tif file.");
+    	print(fileList[i],"is NOT a tif file.");
     }
     run("Close All");
          
